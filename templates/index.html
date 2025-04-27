@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AI Chatbot</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function sendMessage() {
+            var userMessage = document.getElementById("userMessage").value;
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("chatbox").innerHTML += "<p><b>You:</b> " + userMessage + "</p>";
+                document.getElementById("chatbox").innerHTML += "<p><b>Bot:</b> " + data.response + "</p>";
+            });
+        }
+
+        function uploadPDF() {
+            var formData = new FormData();
+            formData.append("file", document.getElementById("pdfFile").files[0]);
+
+            fetch("/summarize_pdf", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("summary").innerText = "Summary: " + data.summary;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>AI Chatbot</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="userMessage" placeholder="Ask me anything...">
+    <button onclick="sendMessage()">Send</button>
+
+    <h2>Upload PDF for Summarization</h2>
+    <input type="file" id="pdfFile">
+    <button onclick="uploadPDF()">Summarize</button>
+    <p id="summary"></p>
+</body>
+</html>
