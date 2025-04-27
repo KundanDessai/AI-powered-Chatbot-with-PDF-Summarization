@@ -1,7 +1,7 @@
 import google.generativeai as genai
 
 # Use your Bard API key
-genai.configure(api_key="AIzaSyAARDHhoQ6qZcXtXxeDR5G4WTzungsqloQ")
+genai.configure(api_key=" ")
 
 def ask_bard(prompt):
     try:
